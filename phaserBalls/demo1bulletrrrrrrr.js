@@ -190,7 +190,7 @@ function resetVariables() {
 
 function saltar() {
     if (jugador.body.touching.down && plataforma.body.touching.up) {
-        jugador.body.velocity.y = -300;
+        jugador.body.velocity.y = -400;
         isjumping = true;
     }
     console.log(estatuSuelo);
@@ -317,31 +317,45 @@ function obtenerBalaMasCercana() {
 }
 
 function disparo() {
-    var bala = balas.create(juego.world.randomX, h, 'bala');
-   // var bala2 = balas.create(w - 100, h, 'bala'); //bala desde la derecha
-    juego.physics.enable(bala, Phaser.Physics.ARCADE);
-    bala.body.collideWorldBounds = true;
-    bala.body.bounce.set(1.25);
+    var bala = balas.create(juego.world.randomX, h-100, 'bala');
+    var bala2 = balas.create(w-100, velocidadRandom(h/2 -50, h/2 -100), 'bala'); //bala desde la derecha
+    var bala3 = balas.create(velocidadRandom(0,w), 10, 'bala'); //bala desde arriba 
 
-    //juego.physics.enable(bala2, Phaser.Physics.ARCADE);
-    //bala2.body.allowGravity = false;
-   // bala2.body.collideWorldBounds = true;
+    juego.physics.enable(bala, Phaser.Physics.ARCADE);
+    bala.body.allowGravity = false;
+    bala.body.collideWorldBounds = true;
+
+
+    juego.physics.enable(bala2, Phaser.Physics.ARCADE);
+    bala2.body.allowGravity = false;
+    bala2.body.collideWorldBounds = true;
+
+    juego.physics.enable(bala3, Phaser.Physics.ARCADE);
+    bala3.body.allowGravity = false;
+    bala3.body.collideWorldBounds = true;
 
 
     // Temporizador para destruir la bala después de 5 segundos
     juego.time.events.add(Phaser.Timer.SECOND * 4, function () {
         bala.kill();
-        //bala2.kill();
+        bala2.kill();
+        bala3.kill();
     }, this);
 
     // Generar balas en diferentes direcciones
     var angle = juego.rnd.angle();
 
-      // Bala hacia la derecha
-       //bala2.body.velocity.x = -200;
-       //bala2.body.velocity.y = 0;
+      // Bala hacia la izq
+       bala2.body.velocity.x = -200;
+       bala2.body.velocity.y = 0;
 
-    juego.physics.arcade.velocityFromAngle(angle, velocidadRandom(500, 600), bala.body.velocity);
+
+       // Bala hacia derecha
+       bala.body.velocity.x = 0;
+       bala.body.velocity.y = -200;
+
+       bala3.body.velocity.x = 100;
+       bala3.body.velocity.y = 200;
 
 }
 
